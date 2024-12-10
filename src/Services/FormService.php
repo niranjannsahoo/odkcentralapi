@@ -8,70 +8,62 @@ use Niranjannsahoo\Odkcentralapi\Exceptions\OdkException;
 
 class FormService
 {
-    /**
-     * The HTTP Client instance.
-     *
-     * @var Client
-     */
-    protected $client;
+    public $api;
 
-    /**
-     * The ODK API URL.
-     *
-     * @var string
-     */
-    protected $apiUrl;
+    public $projectId;
 
-    /**
-     * Constructor.
-     *
-     * @param Client $client
-     * @param string $apiUrl
-     */
-    public function __construct(Client $client, string $apiUrl)
+    public $xmlFormId;
+
+    public $submissionId;
+
+    public $endpoint;
+
+    private $params;
+
+    private $headers;
+
+    private $file;
+	
+    public function __construct()
     {
-        $this->client = $client;
-        $this->apiUrl = $apiUrl;
+		$this->api = new OdkCentralRequest;
+
+        $this->projectId = null;
+
+        $this->xmlFormId = null;
+
+        $this->submissionId = null;
+
+        $this->endpoint = '';
+
+        $this->query = [];
+
+        $this->headers = [];
+
+        $this->file = null;
     }
+	
+	# GET /v1/projects/{projectId}/forms 
+	# List all Forms
 
-    /**
-     * Get all available forms.
-     *
-     * @return array
-     * @throws OdkException
-     */
-    public function getAllForms(): array
+    public function all($parameters,$metadata=false,$query=[])
     {
-        try {
-            // Send the request to get all forms
-            $response = $this->client->get("{$this->apiUrl}/forms");
+        if($metadata){
+			$this->headers = [
+				'X-Extended-Metadata' => 'true',
+			];
+		}
 
-            // Parse and validate the response
-            $data = ResponseHelper::validateResponse($response);
+        $this->projectId = $parameters['projectId'];
 
-            return $data['results']; // Assuming results contain the forms
-        } catch (\Exception $e) {
-            throw new OdkException('Failed to fetch forms: ' . $e->getMessage());
-        }
-    }
+        $this->endpoint = 'projects/'.$this->projectId.'/forms/';
+		if($query){
+			$this->query = [
+				'deleted' => $query['deleted']
+				
+			];
+		}
 
-    /**
-     * Get a specific form by ID.
-     *
-     * @param string $formId
-     * @return array
-     * @throws OdkException
-     */
-    public function getFormById(string $formId): array
-    {
-        try {
-            // Send the request to get the form by ID
-            $response = $this->client->get("{$this->apiUrl}/forms/{$formId}");
-
-            // Parse and validate the response
-            return ResponseHelper::validateResponse($response);
-        } catch (\Exception $e) {
-            throw new OdkException('Failed to fetch form details: ' . $e->getMessage());
-        }
+        return $this->api->get($this->endpoint, $this->query, $this->headers);
     }
 }

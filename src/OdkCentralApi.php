@@ -8,13 +8,6 @@ use Niranjannsahoo\Odkcentralapi\Services\SubmissionService;
 class OdkCentralApi
 {
     /**
-     * The Authentication Service instance.
-     *
-     * @var AuthenticationService
-     */
-    protected $authenticationService;
-
-    /**
      * The Form Service instance.
      *
      * @var FormService
@@ -36,24 +29,11 @@ class OdkCentralApi
      * @param SubmissionService $submissionService
      */
     public function __construct(
-        AuthenticationService $authenticationService,
-        FormService $formService,
-        SubmissionService $submissionService
+        FormService $formService
     ) {
-        $this->authenticationService = $authenticationService;
-        $this->formService = $formService;
-        $this->submissionService = $submissionService;
+		$this->formService = $formService;
     }
 
-    /**
-     * Get the Authentication Service.
-     *
-     * @return AuthenticationService
-     */
-    public function authentication(): AuthenticationService
-    {
-        return $this->authenticationService;
-    }
 
     /**
      * Get the Form Service.
@@ -65,13 +45,4 @@ class OdkCentralApi
         return $this->formService;
     }
 
-    /**
-     * Get the Submission Service.
-     *
-     * @return SubmissionService
-     */
-    public function submissions(): SubmissionService
-    {
-        return $this->submissionService;
-    }
 }
