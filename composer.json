@@ -1,0 +1,19 @@
+{
+    "name": "niranjannsahoo/odkcentralapi",
+    "description": "odk central api use in laravel project",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Niranjannsahoo\\Odkcentralapi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "niranjannsahoo",
+            "email": "niranjannsahoo@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
